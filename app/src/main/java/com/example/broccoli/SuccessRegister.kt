@@ -78,6 +78,7 @@ class SuccessRegister : AppCompatActivity() {
             .burst(150)
     }
 
+    // Success button click
     fun dissmissSuccess(view : View){
         val intent = Intent(this,PostRegisted::class.java)
         startActivity(intent)
