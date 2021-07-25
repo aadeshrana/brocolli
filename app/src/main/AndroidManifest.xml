@@ -6,20 +6,25 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_brocolli_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_brocolli_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.Broccoli">
-        <activity android:name=".PostRegisted"></activity>
-        <activity android:name=".Register" />
-        <activity android:name=".SuccessRegister" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".SplashScreen">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+        </activity>
+        <activity android:name=".PostRegisted" />
+        <activity android:name=".Register" />
+        <activity android:name=".SuccessRegister" />
+        <activity android:name=".PreRegister">
+
         </activity>
     </application>
 

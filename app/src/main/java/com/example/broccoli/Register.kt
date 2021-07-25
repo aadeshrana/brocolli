@@ -23,6 +23,8 @@ import java.io.IOException
 
 
 class Register : AppCompatActivity() {
+
+    // Declare UI
     var fullNameET : EditText? = null
     var emailET : EditText? = null
     var confEmailET : EditText? = null
@@ -45,9 +47,15 @@ class Register : AppCompatActivity() {
 
     var requestPB : ProgressBar? = null
 
+    var errorNameTV : TextView?  = null
+    var errorEmailTV : TextView?  = null
+    var errorConfEmailTV : TextView?  = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register)
+
+        // Set UI
         fullNameET = findViewById(R.id.etFullName)
         emailET = findViewById(R.id.etEmail)
         confEmailET = findViewById(R.id.etConfirmEmail)
@@ -56,12 +64,18 @@ class Register : AppCompatActivity() {
         emailCV = findViewById(R.id.cvEmail)
         confEmailCV = findViewById(R.id.cvConfEmail)
 
+        errorNameTV = findViewById(R.id.tvNameError)
+        errorEmailTV = findViewById(R.id.tvEmailError)
+        errorConfEmailTV = findViewById(R.id.tvEmailConfError)
+
         requestBtn = findViewById(R.id.btnRequest)
         requestBtn?.isClickable = false
 
         errorTV = findViewById(R.id.tvError)
 
         requestPB = findViewById(R.id.pbRequest)
+
+
 
         fullNameET?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -71,17 +85,22 @@ class Register : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(count < 3){
+
+                if(s?.length!! < 3){
                     fullNameCV?.setCardBackgroundColor(Color.parseColor("#FF0000"))
                     validName = false
+                    errorNameTV?.visibility = View.VISIBLE
+                    errorNameTV?.text = "Full name must be at least 3 characters long"
                     errorMessage = "Full name must be at least 3 characters long"
                 }else{
                     fullNameCV?.setCardBackgroundColor(Color.parseColor("#00ff00"))
                     fullNameValue = fullNameET?.text.toString()
+                    errorNameTV?.visibility = View.GONE
+                    errorNameTV?.text = ""
                     validName = true
                     errorMessage = ""
                 }
-                setErrorMessage()
+                //setErrorMessage()
                 isValidForm()
             }
         })
@@ -94,26 +113,33 @@ class Register : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(count == 0){
+                if(s?.length == 0){
                     emailCV?.setCardBackgroundColor(Color.parseColor("#FF0000"))
                     validEmail = false
                     errorMessage = "Email cannot be empty"
+                    errorEmailTV?.visibility = View.VISIBLE
+                    errorEmailTV?.text = "Email cannot be empty"
                 }else{
                     if(isValidEmail(s)){
                         emailCV?.setCardBackgroundColor(Color.parseColor("#00ff00"))
                         emailValue = s.toString()
                         validEmail = true
                         errorMessage = ""
+                        errorEmailTV?.visibility = View.GONE
+                        errorEmailTV?.text = ""
                     }else {
                         emailCV?.setCardBackgroundColor(Color.parseColor("#FF0000"))
                         validEmail = false
+                        errorEmailTV?.visibility = View.VISIBLE
+                        errorEmailTV?.text = "Please enter a valid email"
                         errorMessage = "Please enter a valid email"
                     }
                 }
-                setErrorMessage()
+                //setErrorMessage()
                 isValidForm()
             }
         })
+
 
         confEmailET?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -123,36 +149,42 @@ class Register : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(count == 0){
+                if(s?.length == 0){
                     confEmailCV?.setCardBackgroundColor(Color.parseColor("#FF0000"))
                     validConfEmail = false
                     errorMessage = "Confirm Email cannot be empty"
+                    errorConfEmailTV?.visibility = View.VISIBLE
+                    errorConfEmailTV?.text = "Confirm Email cannot be empty"
                 }else{
                     if(isEmailMatch(emailValue, s.toString())){
                         confEmailCV?.setCardBackgroundColor(Color.parseColor("#00ff00"))
                         confEmailValue = s.toString()
                         validConfEmail = true
                         errorMessage = ""
+                        errorConfEmailTV?.visibility = View.GONE
+                        errorConfEmailTV?.text = ""
                     }else {
                         confEmailCV?.setCardBackgroundColor(Color.parseColor("#FF0000"))
                         validConfEmail = false
                         errorMessage = "Emails do not match"
+                        errorConfEmailTV?.visibility = View.VISIBLE
+                        errorConfEmailTV?.text = "Emails do not match"
                     }
                 }
-                setErrorMessage()
+                //setErrorMessage()
                 isValidForm()
             }
         })
     }
 
+    // Send request button pressed
     fun  sendRequest(view : View){
         requestBtn?.visibility = View.GONE
         requestPB?.visibility = View.VISIBLE
         postRequest()
-
-
     }
 
+    // Display UI according to the response provided from the backend
     fun afterpostRequest(response: String){
         if(response.equals("Registered")) {
             runOnUiThread { requestBtn?.visibility = View.VISIBLE
@@ -174,9 +206,12 @@ class Register : AppCompatActivity() {
         runOnUiThread { text.text = value }
     }
 
+    // Display error message
     fun setErrorMessage(){
         errorTV?.setText(errorMessage)
     }
+
+    // Check if email is a valid email string
     fun isValidEmail(target: CharSequence?): Boolean {
         return if (TextUtils.isEmpty(target)) {
             false
@@ -185,18 +220,19 @@ class Register : AppCompatActivity() {
         }
     }
 
+    // Check if email and confirm are same
     fun isEmailMatch(email: String?, confEmail : String): Boolean{
         return email.equals(confEmail)
     }
 
+    //Check if the form is valid or not
     fun isValidForm(){
-        Log.e("formValid","validName"+validName)
-        Log.e("formValid","validEmail"+validEmail)
-        Log.e("formValid","validConfEmail"+validConfEmail)
+
         if(validName && validEmail &&  validConfEmail){
             Log.e("formValid","validConfEmailssss"+validConfEmail)
             requestBtn?.background?.setTint(Color.parseColor("#292C87"))
             requestBtn?.isClickable = true
+            requestBtn?.setTextColor(Color.parseColor("#ffffff"))
         }
        else{
 
@@ -206,11 +242,12 @@ class Register : AppCompatActivity() {
         }
     }
 
+    // Send Post request to the backend
     fun postRequest(){
         val rootObject= JSONObject()
         rootObject.put("name",fullNameValue)
         rootObject.put("email",emailValue)
-        val JSONObjectString = "{ \"name\":"+fullNameValue+", \"email\":"+emailValue+" }"
+
 
         val okHttpClient = OkHttpClient()
         val mediaType = "application/json; charset=utf-8".toMediaType()
@@ -223,21 +260,20 @@ class Register : AppCompatActivity() {
             .build()
         okHttpClient.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.e("httpResponse","e"+e)
+                Log.e("httpResponse","error"+e)
 
             }
 
             override fun onResponse(call: Call, response: Response) {
 
                 val responseString = response.body!!.string()
-                Log.e("httpResponse","r"+ responseString)
+
                 if(responseString == "Registered"){
                     returnString =  "Registered"
                 }else{
                     val jobject = JSONObject(responseString)
                     returnString = jobject.getString("errorMessage")
                 }
-
 
                 afterpostRequest(returnString)
             }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".PreRegister"
     android:background="#fff"
     >
 
@@ -12,11 +12,11 @@
     <ImageView
         android:id="@+id/ivHeader"
         android:layout_width="match_parent"
-        android:layout_height="210dp"
+        android:layout_height="200dp"
         android:background="#20226A"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_headingbackground" />
+        app:srcCompat="@drawable/ic_register_header" />
 
 
     <TextView
@@ -32,80 +32,104 @@
         app:layout_constraintTop_toBottomOf="@+id/ivHeader" />
 
     <androidx.cardview.widget.CardView
-        app:cardBackgroundColor="#CACACA"
         android:id="@+id/cvFullName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:cardBackgroundColor="#CACACA"
         app:cardCornerRadius="11dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        app:cardElevation="4dp"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle"
         tools:layout_editor_absoluteX="44dp">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <EditText
                 android:id="@+id/etFullName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="#CACACA"
-                android:hint="Full Name"
-                android:textColor="#000"
-                android:background="@drawable/rounded_edittext"
-                tools:layout_editor_absoluteX="52dp"
-                tools:layout_editor_absoluteY="352dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:padding="16dp"
                 android:layout_margin="1dp"
-                />
+                android:background="@drawable/rounded_edittext"
+                android:hint="Full Name"
+                android:padding="16dp"
+                android:textColor="#000"
+                android:textColorHint="#CACACA"
+                tools:layout_editor_absoluteX="52dp"
+                tools:layout_editor_absoluteY="352dp" />
         </RelativeLayout>
 
 
     </androidx.cardview.widget.CardView>
 
+    <TextView
+        android:id="@+id/tvNameError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="#FF0000"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cvFullName"
+        android:visibility="gone"
+        />
+
     <androidx.cardview.widget.CardView
-        app:cardBackgroundColor="#CACACA"
         android:id="@+id/cvEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        app:cardElevation="4dp"
+        app:cardBackgroundColor="#CACACA"
         app:cardCornerRadius="11dp"
-        app:layout_constraintTop_toBottomOf="@+id/cvFullName"
-        tools:layout_editor_absoluteX="-16dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvNameError">
 
         <EditText
             android:id="@+id/etEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="1dp"
             android:background="@drawable/rounded_edittext"
-            android:textColorHint="#CACACA"
-            android:textColor="#000"
-            tools:layout_editor_absoluteX="-8dp"
-            tools:layout_editor_absoluteY="417dp"
             android:hint="Email"
             android:padding="16dp"
-            android:layout_margin="1dp"
-            />
+            android:textColor="#000"
+            android:textColorHint="#CACACA"
+            tools:layout_editor_absoluteX="-8dp"
+            tools:layout_editor_absoluteY="417dp" />
 
     </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tvEmailError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="#FF0000"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cvEmail"
+        android:visibility="gone"
+        />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvConfEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         app:cardBackgroundColor="#CACACA"
         app:cardCornerRadius="11dp"
-        app:cardElevation="4dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginLeft="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/cvEmail"
+        android:layout_marginRight="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/tvEmailError"
         tools:layout_editor_absoluteX="0dp">
 
         <RelativeLayout
@@ -116,8 +140,11 @@
                 android:id="@+id/etConfirmEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_margin="1dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="1dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="1dp"
+                android:layout_marginTop="1dp"
                 android:background="@drawable/rounded_edittext"
                 android:hint="Confirm Email"
                 android:padding="16dp"
@@ -130,6 +157,20 @@
 
 
     </androidx.cardview.widget.CardView>
+
+
+    <TextView
+        android:id="@+id/tvEmailConfError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="#FF0000"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cvConfEmail"
+        android:visibility="gone"
+        />
 
     <Button
         android:id="@+id/btnRequest"
@@ -144,6 +185,7 @@
         android:padding="16dp"
         android:text="REQUEST"
         android:textSize="20sp"
+        android:textColor="#fff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvError" />
@@ -152,24 +194,31 @@
         android:id="@+id/tvError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text=""
         android:textColor="#FF0000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cvConfEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/tvEmailConfError" />
 
     <ProgressBar
-        android:visibility="gone"
         android:id="@+id/pbRequest"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        app:layout_constraintBottom_toBottomOf="@+id/btnRequest"
+        android:layout_marginTop="23dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvError"
         app:layout_constraintTop_toTopOf="@+id/btnRequest" />
+
+
+
+
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
