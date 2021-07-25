@@ -69,7 +69,7 @@ class Register : AppCompatActivity() {
         errorConfEmailTV = findViewById(R.id.tvEmailConfError)
 
         requestBtn = findViewById(R.id.btnRequest)
-        requestBtn?.isClickable = false
+        //requestBtn?.isClickable = false
 
         errorTV = findViewById(R.id.tvError)
 
@@ -91,7 +91,7 @@ class Register : AppCompatActivity() {
                     validName = false
                     errorNameTV?.visibility = View.VISIBLE
                     errorNameTV?.text = "Full name must be at least 3 characters long"
-                    errorMessage = "Full name must be at least 3 characters long"
+                    errorMessage = ""
                 }else{
                     fullNameCV?.setCardBackgroundColor(Color.parseColor("#00ff00"))
                     fullNameValue = fullNameET?.text.toString()
@@ -100,7 +100,7 @@ class Register : AppCompatActivity() {
                     validName = true
                     errorMessage = ""
                 }
-                //setErrorMessage()
+                setErrorMessage()
                 isValidForm()
             }
         })
@@ -116,7 +116,7 @@ class Register : AppCompatActivity() {
                 if(s?.length == 0){
                     emailCV?.setCardBackgroundColor(Color.parseColor("#FF0000"))
                     validEmail = false
-                    errorMessage = "Email cannot be empty"
+                    errorMessage = ""
                     errorEmailTV?.visibility = View.VISIBLE
                     errorEmailTV?.text = "Email cannot be empty"
                 }else{
@@ -132,10 +132,10 @@ class Register : AppCompatActivity() {
                         validEmail = false
                         errorEmailTV?.visibility = View.VISIBLE
                         errorEmailTV?.text = "Please enter a valid email"
-                        errorMessage = "Please enter a valid email"
+                        errorMessage = ""
                     }
                 }
-                //setErrorMessage()
+                setErrorMessage()
                 isValidForm()
             }
         })
@@ -152,7 +152,7 @@ class Register : AppCompatActivity() {
                 if(s?.length == 0){
                     confEmailCV?.setCardBackgroundColor(Color.parseColor("#FF0000"))
                     validConfEmail = false
-                    errorMessage = "Confirm Email cannot be empty"
+                    errorMessage = ""
                     errorConfEmailTV?.visibility = View.VISIBLE
                     errorConfEmailTV?.text = "Confirm Email cannot be empty"
                 }else{
@@ -166,12 +166,12 @@ class Register : AppCompatActivity() {
                     }else {
                         confEmailCV?.setCardBackgroundColor(Color.parseColor("#FF0000"))
                         validConfEmail = false
-                        errorMessage = "Emails do not match"
+                        errorMessage = ""
                         errorConfEmailTV?.visibility = View.VISIBLE
                         errorConfEmailTV?.text = "Emails do not match"
                     }
                 }
-                //setErrorMessage()
+                setErrorMessage()
                 isValidForm()
             }
         })
@@ -179,9 +179,14 @@ class Register : AppCompatActivity() {
 
     // Send request button pressed
     fun  sendRequest(view : View){
-        requestBtn?.visibility = View.GONE
-        requestPB?.visibility = View.VISIBLE
-        postRequest()
+        if(validName && validEmail &&  validConfEmail) {
+            requestBtn?.visibility = View.GONE
+            requestPB?.visibility = View.VISIBLE
+            postRequest()
+        }else{
+            errorMessage = "The details you entered are not valid"
+            setErrorMessage()
+        }
     }
 
     // Display UI according to the response provided from the backend
@@ -231,13 +236,13 @@ class Register : AppCompatActivity() {
         if(validName && validEmail &&  validConfEmail){
             Log.e("formValid","validConfEmailssss"+validConfEmail)
             requestBtn?.background?.setTint(Color.parseColor("#292C87"))
-            requestBtn?.isClickable = true
+            //requestBtn?.isClickable = true
             requestBtn?.setTextColor(Color.parseColor("#ffffff"))
         }
        else{
 
             requestBtn?.background?.setTint(Color.parseColor("#CACACA"))
-            requestBtn?.isClickable = false
+            //requestBtn?.isClickable = false
 
         }
     }
