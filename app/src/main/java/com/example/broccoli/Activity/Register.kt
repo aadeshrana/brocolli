@@ -1,5 +1,7 @@
-package com.example.broccoli
+package com.example.broccoli.Activity
 
+import HelperClass.OkHttpProvider
+import Interface.OnRequestCompleteListner
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -15,6 +17,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import com.example.broccoli.R
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -22,7 +25,7 @@ import org.json.JSONObject
 import java.io.IOException
 
 
-class Register : AppCompatActivity() {
+class Register : AppCompatActivity(), OnRequestCompleteListner {
 
     // Declare UI
     var fullNameET : EditText? = null
@@ -182,7 +185,8 @@ class Register : AppCompatActivity() {
         if(validName && validEmail &&  validConfEmail) {
             requestBtn?.visibility = View.GONE
             requestPB?.visibility = View.VISIBLE
-            postRequest()
+            OkHttpProvider.requestInvitation(fullNameValue!!,emailValue!!,this)
+
         }else{
             errorMessage = "The details you entered are not valid"
             setErrorMessage()
@@ -191,20 +195,7 @@ class Register : AppCompatActivity() {
 
     // Display UI according to the response provided from the backend
     fun afterpostRequest(response: String){
-        if(response.equals("Registered")) {
-            runOnUiThread { requestBtn?.visibility = View.VISIBLE
-                requestPB?.visibility = View.GONE }
 
-            val intent = Intent(this,SuccessRegister::class.java)
-            startActivity(intent)
-        }else{
-            errorMessage = response
-            runOnUiThread { requestBtn?.visibility = View.VISIBLE
-                requestPB?.visibility = View.GONE
-                setErrorMessage()}
-
-
-        }
     }
 
     private fun setText(text: TextView, value: String) {
@@ -247,43 +238,23 @@ class Register : AppCompatActivity() {
         }
     }
 
-    // Send Post request to the backend
-    fun postRequest(){
-        val rootObject= JSONObject()
-        rootObject.put("name",fullNameValue)
-        rootObject.put("email",emailValue)
 
 
-        val okHttpClient = OkHttpClient()
-        val mediaType = "application/json; charset=utf-8".toMediaType()
-        val requestBody = rootObject.toString().toRequestBody(mediaType)
+    // CallBack Function for Async HTTP Request
+    override fun onSuccess(resposeString: String) {
+        if(resposeString.equals("Registered")) {
+            runOnUiThread { requestBtn?.visibility = View.VISIBLE
+                requestPB?.visibility = View.GONE }
 
-        var returnString = ""
-        val request = Request.Builder()
-            .method("POST", requestBody)
-            .url("https://us-central1-blinkapp-684c1.cloudfunctions.net/fakeAuth\n")
-            .build()
-        okHttpClient.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.e("httpResponse","error"+e)
-
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-
-                val responseString = response.body!!.string()
-
-                if(responseString == "Registered"){
-                    returnString =  "Registered"
-                }else{
-                    val jobject = JSONObject(responseString)
-                    returnString = jobject.getString("errorMessage")
-                }
-
-                afterpostRequest(returnString)
-            }
-        })
+            val intent = Intent(this, SuccessRegister::class.java)
+            startActivity(intent)
+        }else{
+            errorMessage = resposeString
+            runOnUiThread { requestBtn?.visibility = View.VISIBLE
+                requestPB?.visibility = View.GONE
+                setErrorMessage()}
 
 
+        }
     }
 }

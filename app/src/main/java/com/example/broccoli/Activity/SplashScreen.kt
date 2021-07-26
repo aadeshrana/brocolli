@@ -1,20 +1,25 @@
-package com.example.broccoli
+package com.example.broccoli.Activity
 
+import HelperClass.SharePreferenceProvider
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import com.example.broccoli.R
 
 class SplashScreen : AppCompatActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
+       val sharePreferenceProvider = SharePreferenceProvider(this)
 
         Handler().postDelayed({
 
-            val isUserRegistered = getSharePref()
+            val isUserRegistered = sharePreferenceProvider.getString("isRegistered")
             if(isUserRegistered.equals("false")) {
                 val intent = Intent(this, PreRegister::class.java)
                 startActivity(intent)
@@ -27,11 +32,5 @@ class SplashScreen : AppCompatActivity() {
         }, 3000)
     }
 
-    //Check shared preference to redirect to activity
-    fun getSharePref(): String? {
-        val sharedPreferences: SharedPreferences = this.getSharedPreferences("userDetails",
-            Context.MODE_PRIVATE)
-        val isUserRegistered = sharedPreferences.getString("isRegistered","false")
-        return isUserRegistered
-    }
+
 }

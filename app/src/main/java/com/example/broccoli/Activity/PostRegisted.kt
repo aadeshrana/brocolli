@@ -1,5 +1,6 @@
-package com.example.broccoli
+package com.example.broccoli.Activity
 
+import HelperClass.SharePreferenceProvider
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -9,6 +10,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.Window
 import android.widget.Button
+import com.example.broccoli.R
 
 class PostRegisted : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,10 +37,8 @@ class PostRegisted : AppCompatActivity() {
             dialog.dismiss()
         }
         confirmBtn.setOnClickListener {
-            val editor:SharedPreferences.Editor =  sharedPreferences.edit()
-            editor.putString("isRegistered","false")
-            editor.apply()
-            editor.commit()
+            val sharePreferenceProvider = SharePreferenceProvider(this)
+            sharePreferenceProvider.putString("isRegistered","false")
             dialog.dismiss()
             showSuccessDiag()
 
@@ -57,7 +57,7 @@ class PostRegisted : AppCompatActivity() {
         val confBtn = dialog.findViewById<Button>(R.id.btnOkay)
         confBtn.setOnClickListener {
             dialog.dismiss()
-            val intent = Intent(this,PreRegister::class.java)
+            val intent = Intent(this, PreRegister::class.java)
             startActivity(intent)
         }
         dialog.show()

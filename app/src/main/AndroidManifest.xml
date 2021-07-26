@@ -11,7 +11,7 @@
         android:roundIcon="@drawable/ic_brocolli_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.Broccoli">
-        <activity android:name=".SplashScreen">
+        <activity android:name=".Activity.SplashScreen">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,10 +20,10 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".PostRegisted" />
-        <activity android:name=".Register" />
-        <activity android:name=".SuccessRegister" />
-        <activity android:name=".PreRegister">
+        <activity android:name=".Activity.PostRegisted" />
+        <activity android:name=".Activity.Register" />
+        <activity android:name=".Activity.SuccessRegister" />
+        <activity android:name=".Activity.PreRegister">
 
         </activity>
     </application>
